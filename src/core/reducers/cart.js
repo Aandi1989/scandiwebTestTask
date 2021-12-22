@@ -19,13 +19,13 @@ const cartReducer = (state = initialState, action) => {
       }
 
     case cartTypes.CHANGE_PRODUCT_ATTRIBUTE_IN_CART:
-      const { productId, attrType, val } = action;
+      const { attrType, val } = action;
       return {
         ...state,
         shopingBag: [
           ...state.shopingBag
-        ].map(product => {
-          if (product.id === productId) {
+        ].map((product, index) => {
+          if (index === action.index) {
             return {
               ...product,
               attributes: [
@@ -59,8 +59,8 @@ const cartReducer = (state = initialState, action) => {
             ...state,
             shopingBag: [
               ...state.shopingBag
-            ].map(product => {
-              if (product.id === action.productId) {
+            ].map((product, index) => {
+              if (index === action.index) {
                 return {
                   ...product,
                   quantity: product.quantity + 1
@@ -73,8 +73,8 @@ const cartReducer = (state = initialState, action) => {
             ...state,
             shopingBag: [
               ...state.shopingBag
-            ].map(product => {
-              if (product.id === action.productId) {
+            ].map((product, index) => {
+              if (index === action.index) {
                 return {
                   ...product,
                   quantity: product.quantity > 0 ? product.quantity - 1 : product.quantity
