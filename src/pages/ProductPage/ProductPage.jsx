@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux';
 import { loadProductByIdThunk } from '../../core/thunk/products';
 import { nanoid } from 'nanoid';
 import { CURRENCY_ICONS } from '../../core/constans/currency'
-import { removeHTMLtagFromString } from '../../core/helpers/removeHTMLtagFromString';
 import { changeProductAttributeAction, removeProductByIdAction } from '../../core/actions/products';
 import { addProductToCartAction } from '../../core/actions/cart';
 
@@ -45,7 +44,6 @@ class ProductPage extends React.Component {
         })
       }
     }
-
     return (
       <div className={classes.wrapper}>
         {currentProduct && (
@@ -61,7 +59,7 @@ class ProductPage extends React.Component {
                 />)}
               </div>
               <div className={classes.wrapper__gallery__currentImage}>
-                <img src={currentImgUrl ? currentImgUrl : currentProduct.gallery[0]} />
+                <img alt='img' src={currentImgUrl ? currentImgUrl : currentProduct.gallery[0]} />
               </div>
             </div>
             <div className={classes.wrapper__info}>
@@ -84,8 +82,11 @@ class ProductPage extends React.Component {
                         {atr.items.map(val => {
                           return (
                             <div 
+                              style={{background: val.value}}
                               onClick={() => changeProductAttribute(atr.id, val.value)} 
-                              className={val.selected ? classes.wrapper__info__attributes__box__attribute_selected : classes.wrapper__info__attributes__box__attribute} 
+                              className={val.selected ? 
+                                classes.wrapper__info__attributes__box__attribute_selected : 
+                                classes.wrapper__info__attributes__box__attribute} 
                               key={nanoid()}
                             >
                               {val.displayValue}
@@ -109,9 +110,10 @@ class ProductPage extends React.Component {
               <button onClick={addToCart} className={classes.wrapper__addToCartButton}>
                 Add to cart
               </button>
-              <p className={classes.wrapper__productDescription}>
-                {removeHTMLtagFromString(currentProduct.description)}
-              </p>
+              <div 
+                className={classes.wrapper__productDescription} 
+                dangerouslySetInnerHTML={{ __html: currentProduct.description}}
+              ></div>
             </div>
           </>
         )}
